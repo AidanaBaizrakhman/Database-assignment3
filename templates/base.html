@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Conference Review System{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header><div class="bar">
+  <a class="brand" href="{{ url_for('index') }}">Conference Review System</a>
+  <nav>
+    {% set ep = request.endpoint or '' %}
+    <a href="{{ url_for('users') }}" class="{{ 'active' if ep.startswith('user') }}">Users</a>
+    <a href="{{ url_for('papers') }}" class="{{ 'active' if ep.startswith('paper') or ep.startswith('author') or ep.startswith('keyword') or ep.startswith('version') }}">Papers</a>
+    <a href="{{ url_for('reviews') }}" class="{{ 'active' if ep.startswith('review') }}">Reviews</a>
+    <a href="{{ url_for('sessions') }}" class="{{ 'active' if ep.startswith('session') }}">Sessions</a>
+    <a href="{{ url_for('schedule') }}" class="{{ 'active' if ep == 'schedule' }}">Schedule</a>
+  </nav>
+</div></header>
+<main>
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="flash {{ category }}">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

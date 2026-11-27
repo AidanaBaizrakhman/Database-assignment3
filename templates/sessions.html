@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="toolbar"><h1>Sessions</h1><a class="btn" href="{{ url_for('session_new') }}">+ New session</a></div>
+<table>
+  <tr><th>ID</th><th>Conference</th><th>Title</th><th>Date</th><th>Time</th><th>Room</th><th>Chair</th><th>Papers</th><th></th></tr>
+  {% for s in sessions %}
+  <tr><td>{{ s.session_id }}</td><td>{{ s.acronym }}</td><td>{{ s.title }}</td><td>{{ s.session_date|d }}</td>
+    <td>{{ s.start_time|hm }}–{{ s.end_time|hm }}</td><td>{{ s.room_label }}</td><td>{{ s.given_name }} {{ s.surname }}</td>
+    <td>{{ s.paper_count }}</td>
+    <td class="actions">
+      <a class="btn light" href="{{ url_for('session_edit', session_id=s.session_id) }}">Edit</a>
+      <form method="post" action="{{ url_for('session_delete', session_id=s.session_id) }}" onsubmit="return confirm('Delete this session? Its papers become unscheduled.')"><button class="danger">Delete</button></form>
+    </td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Research Conference and Paper Review Management</h1>
+<div class="stats">
+  <div class="stat"><b>{{ counts.users }}</b><span>Users</span></div>
+  <div class="stat"><b>{{ counts.papers }}</b><span>Papers</span></div>
+  <div class="stat"><b>{{ counts.reviews }}</b><span>Reviews</span></div>
+  <div class="stat"><b>{{ counts.sessions }}</b><span>Sessions</span></div>
+  <div class="stat"><b>{{ counts.conferences }}</b><span>Conferences</span></div>
+  <div class="stat"><b>{{ counts.tracks }}</b><span>Tracks</span></div>
+</div>
+<h2>Conferences</h2>
+<table>
+  <tr><th>ID</th><th>Acronym</th><th>Name</th><th>City</th><th>Dates</th><th>Submission deadline</th><th>Review deadline</th></tr>
+  {% for c in conferences %}
+  <tr><td>{{ c.conference_id }}</td><td>{{ c.acronym }}</td><td>{{ c.name }}</td><td>{{ c.city }}, {{ c.country }}</td>
+      <td>{{ c.start_date|d }} – {{ c.end_date|d }}</td><td>{{ c.submission_deadline|d }}</td><td>{{ c.review_deadline|d }}</td></tr>
+  {% endfor %}
+</table>
+<p class="hint">Conferences, tracks, reviewer pools, host institutions and labels come from the seed script and are used as selection lists.</p>
+{% endblock %}

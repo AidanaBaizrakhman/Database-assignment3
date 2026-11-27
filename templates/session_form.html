@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ 'New session' if new else 'Edit session #' ~ s.session_id }}</h1>
+<form method="post" class="stack card">
+  <div class="grid2">
+    <div><label>Conference</label>
+      <select name="conference_id" required>
+        {% for c in conferences %}<option value="{{ c.conference_id }}" {{ 'selected' if s.get('conference_id')|string == c.conference_id|string }}>{{ c.acronym }} ({{ c.start_date|d }} – {{ c.end_date|d }})</option>{% endfor %}
+      </select></div>
+    <div><label>Title</label><input type="text" name="title" value="{{ s.get('title', '') }}" required></div>
+    <div><label>Date</label><input type="date" name="session_date" value="{{ s.get('session_date', '') }}" required></div>
+    <div><label>Room</label><input type="text" name="room_label" value="{{ s.get('room_label', '') }}" required></div>
+    <div><label>Start time</label><input type="time" name="start_time" value="{{ s.get('start_time', '') }}" required></div>
+    <div><label>End time</label><input type="time" name="end_time" value="{{ s.get('end_time', '') }}" required></div>
+    <div><label>Chair <span class="hint">(must be in the conference's reviewer pool)</span></label>
+      <select name="chair_id" required>
+        {% for v in reviewers %}<option value="{{ v.user_id }}" {{ 'selected' if s.get('chair_id')|string == v.user_id|string }}>{{ v.given_name }} {{ v.surname }}</option>{% endfor %}
+      </select></div>
+  </div>
+  {% if papers_in %}
+  <p class="hint">Papers in this session:
+    {% for p in papers_in %}<a href="{{ url_for('paper_detail', paper_id=p.paper_id) }}">#{{ p.paper_id }} {{ p.title }}</a>{{ ', ' if not loop.last }}{% endfor %}.
+    Assign papers to sessions on the paper's edit page.</p>
+  {% endif %}
+  <p><button>Save session</button> <a class="btn light" href="{{ url_for('sessions') }}">Cancel</a></p>
+</form>
+{% endblock %}

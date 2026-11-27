@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ 'New review' if new else 'Edit review #' ~ r.review_id }}</h1>
+<form method="post" class="stack card">
+  <div class="grid2">
+    <div><label>Paper</label>
+      <select name="paper_id" required>
+        {% for p in papers %}<option value="{{ p.paper_id }}" {{ 'selected' if r.get('paper_id')|string == p.paper_id|string }}>#{{ p.paper_id }} {{ p.title }} ({{ p.status }})</option>{% endfor %}
+      </select></div>
+    <div><label>Reviewer</label>
+      <select name="reviewer_id" required>
+        {% for v in reviewers %}<option value="{{ v.user_id }}" {{ 'selected' if r.get('reviewer_id')|string == v.user_id|string }}>{{ v.given_name }} {{ v.surname }} ({{ v.email }})</option>{% endfor %}
+      </select></div>
+    <div><label>Overall score <span class="hint">(1–5)</span></label><input type="number" name="overall_score" value="{{ r.get('overall_score', '') }}" required></div>
+    <div><label>Recommendation</label>
+      <select name="recommendation">
+        {% for x in recommendations %}<option {{ 'selected' if r.get('recommendation') == x }}>{{ x }}</option>{% endfor %}
+      </select></div>
+    <div><label>Review date</label><input type="date" name="review_submission_date" value="{{ r.get('review_submission_date', '') }}" required></div>
+  </div>
+  <label>Comments for authors</label><textarea name="comments_for_authors" required>{{ r.get('comments_for_authors', '') }}</textarea>
+  <label>Confidential comments <span class="hint">(optional, for the committee only)</span></label><textarea name="confidential_comments">{{ r.get('confidential_comments') or '' }}</textarea>
+  <p><button>Save review</button> <a class="btn light" href="{{ url_for('reviews') }}">Cancel</a></p>
+</form>
+{% endblock %}

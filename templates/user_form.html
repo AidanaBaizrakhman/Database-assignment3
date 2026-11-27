@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ 'New user' if new else 'Edit user #' ~ u.user_id }}</h1>
+<form method="post" class="stack card">
+  <div class="grid2">
+    <div><label>Given name</label><input type="text" name="given_name" value="{{ u.given_name or '' }}" required></div>
+    <div><label>Surname</label><input type="text" name="surname" value="{{ u.surname or '' }}" required></div>
+    <div><label>Email</label><input type="email" name="email" value="{{ u.email or '' }}" required></div>
+    <div><label>Phone number</label><input type="text" name="phone_number" value="{{ u.phone_number or '' }}" required></div>
+    <div><label>Affiliation</label><input type="text" name="affiliation" value="{{ u.affiliation or '' }}" required></div>
+    <div><label>Country</label><input type="text" name="country" value="{{ u.country or '' }}" required></div>
+  </div>
+
+  <fieldset>
+    <legend><label class="checks" style="display:inline;margin:0"><input type="checkbox" name="is_author" {{ 'checked' if u.is_author }}> Author role</label></legend>
+    <div class="grid2">
+      <div><label>ORCID <span class="hint">(optional)</span></label><input type="text" name="orcid" value="{{ u.orcid or '' }}" placeholder="0000-0000-0000-0000"></div>
+      <div><label>Research areas <span class="hint">(separate with commas)</span></label><input type="text" name="areas" value="{{ u.areas or '' }}" placeholder="Databases, Machine Learning"></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend><label class="checks" style="display:inline;margin:0"><input type="checkbox" name="is_reviewer" {{ 'checked' if u.is_reviewer }}> Reviewer role</label></legend>
+    <div class="grid2">
+      <div><label>Years of reviewing experience</label><input type="number" name="years_experience" value="{{ u.years_experience if u.years_experience is not none else '' }}"></div>
+      <div><label>Expertise <span class="hint">(separate with commas)</span></label><input type="text" name="expertise" value="{{ u.expertise or '' }}" placeholder="Databases, Data Mining"></div>
+    </div>
+    <label>Reviewer pools</label>
+    <div class="checks">
+      {% for c in conferences %}
+        <label><input type="checkbox" name="pools" value="{{ c.conference_id }}" {{ 'checked' if c.conference_id in (u.pools or []) }}> {{ c.acronym }}</label>
+      {% endfor %}
+    </div>
+  </fieldset>
+
+  <p><button>Save</button> <a class="btn light" href="{{ url_for('users') }}">Cancel</a></p>
+</form>
+{% endblock %}
