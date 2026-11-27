@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Accepted paper schedule</h1>
-<p class="hint">Read from the database view <code>accepted_paper_schedule</code> (Part 2, task 8).</p>
 {% if rows is none %}
   <div class="flash error">The view does not exist yet. Run part2_queries.py once to create it.</div>
 {% else %}
